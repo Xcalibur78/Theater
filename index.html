@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krippenspiel 2026 - Übungsprogramm Tabea</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f9fa;
+            color: #333;
+            line-height: 1.5;
+            padding: 15px;
+            margin: 0;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        .szene-block {
+            background: #fff;
+            border: 1px solid #e1e8ed;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        h2 {
+            color: #2980b9;
+            font-size: 15px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #3498db;
+        }
+        .auftritt-gruppe {
+            background: #f8fafc;
+            border-left: 4px solid #3498db;
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            border-radius: 0 4px 4px 0;
+        }
+        .auftritt-gruppe:last-child {
+            margin-bottom: 0;
+        }
+        .titel-klein {
+            font-size: 11px;
+            font-weight: bold;
+            color: #34495e;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            background: #e2e8f0;
+            padding: 2px 6px;
+            display: inline-block;
+            border-radius: 3px;
+        }
+        .rolle {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+            margin-bottom: 2px;
+        }
+        .vorredner { color: #e67e22; }
+        .nachredner { color: #7f8c8d; }
+        .tabea { color: #2c3e50; }
+        
+        .text-cue {
+            font-style: italic;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+        
+        .verdeckt-balken {
+            background-color: #2c3e50;
+            color: #2c3e50;
+            display: block;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            margin-top: 4px;
+            margin-bottom: 6px;
+        }
+        .verdeckt-balken:hover {
+            background-color: #34495e;
+        }
+        .verdeckt-balken.aufgedeckt {
+            background-color: #e8f8f5;
+            color: #27ae60;
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎭 Rollentrainer: Tabea (1. Stern)</h1>
+
+    <!-- 1. SZENE -->
+    <div class="szene-block">
+        <h2>1. Szene: Licht in der Dunkelheit</h2>
+        
+        <div class="auftritt-gruppe">
+            <div class="titel-klein">Erster Auftritt</div>
+            <div class="rolle vorredner">Vorredner: Erzähler/in (Stichwort)</div>
+            <div class="text-cue">"... Noch ist es dunkel, doch ein neues Licht macht sich auf den Weg."</div>
+            
+            <div class="rolle tabea">Tabeas Text (Zum Aufdecken klicken):</div>
+            <div class="verdeckt-balken" onclick="aufdecken(this)">Es ist so dunkel.</div>
+            
+            <div class="rolle nachredner">Person danach: 2. Stern</div>
+            <div class="text-cue">"Und manchmal ist es auch in den Herzen der Menschen dunkel."</div>
+        </div>
+
+        <div class="auftritt-gruppe">
+            <div class="titel-klein">Zweiter Auftritt</div>
+            <div class="rolle vorredner">Vorredner: 3. Stern (Stichwort)</div>
+            <div class="text-cue">"Dann müssen wir etwas tun. Es darf nicht dunkel bleiben."</div>
+            
+            <div class="rolle tabea">Tabeas Text (Zum Aufdecken klicken):</div>
+            <div class="verdeckt-balken" onclick="aufdecken(this)">Lasst uns leuchten und den Menschen Hoffnung bringen!</div>
+            
+            <div class="rolle nachredner">Person danach: Alle Sterne (Regieanweisung)</div>
+            <div class="text-cue">*Die Sterne entzünden die Lichter* "Unser Licht leuchtet in der Dunkelheit."</div>
+        </div>
+    </div>
+
+    <!-- 2. SZENE -->
+    <div class="szene-block">
+        <h2>2. Szene: Verkündigung und Josefs Rückkehr</h2>
+        
+        <div class="auftritt-gruppe">
+            <div class="titel-klein">Einziger Auftritt</div>
+            <div class="rolle vorredner">Vorredner: Regieanweisung (Stichwort)</div>
+            <div class="text-cue">*Die Sterne treten auf.*</div>
+            
+            <div class="rolle tabea">Tabeas Text (Zum Aufdecken klicken):</div>
+            <div class="verdeckt-balken" onclick="aufdecken(this)">Habt ihr das gehört? (freudig) Maria hat Ja gesagt.</div>
+            
+            <div class="rolle nachredner">Person danach: 2. Stern</div>
+            <div class="text-cue">"Wie wunderbar. Gottes Licht kommt in die Welt."</div>
+        </div>
+    </div>
+
+    <!-- 3. SZENE -->
+    <div class="szene-block">
+        <h2>3. Szene: Die Sterne begleiten den Weg</h2>
+        
+        <div class="auftritt-gruppe">
+            <div class="titel-klein">Erster Auftritt</div>
+            <div class="rolle vorredner">Vorredner: 3. Stern (Stichwort)</div>
+            <div class="text-cue">"Endlich, eine neue Zeit wird anbrechen."</div>
+            
+            <div class="rolle tabea">Tabeas Text (Zum Aufdecken klicken):</div>
+            <div class="verdeckt-balken" onclick="aufdecken(this)">Kommt lasst uns sehen, was weiter geschieht.</div>
+            
+            <div class="rolle nachredner">Person danach: Erzähler/in</div>
+            <div class="text-cue">"Einige Monate später befahl Kaiser Augustus..."</div>
+        </div>
+
+        <div class="auftritt-gruppe">
+            <div class="titel-klein">Zweiter Auftritt</div>
+            <div class="rolle vorredner">Vorredner: Regieanweisung (Stichwort)</div>
+            <div class="text-cue">*Maria und Josef erstarren.*</div>
+            
+            <div class="rolle tabea">Tabeas Text (Zum Aufdecken klicken):</div>
+            <div class="verdeckt-balken" onclick="aufdecken(this)">Wir sollten ihnen helfen. Lasst uns etwas mehr leuchten. So können wir sie vielleicht wärmen.</div>
+            
+            <div class="rolle nachredner">Person danach: 2. Stern</div>
+            <div class="text-cue">"Das ist eine gute Idee."</div>
+        </div>
+    </div>
+      <!-- 5. SZENE -->
+    <div class="szene-block">
+        <h2>5. Szene: Die Sterne sprechen mit dem Wirt</h2>
+        
+        <div class="auftritt-gruppe">
+            <div class="titel-klein">Erster Auftritt</div>
+            <div class="rolle vorredner">Vorredner: 3. Stern (Stichwort)</div>
+            <div class="text-cue">"Wir müssen etwas unternehmen."</div>
+            
+            <div class="rolle tabea">Tabeas Text (Zum Aufdecken klicken):</div>
+            <div class="verdeckt-balken" onclick="aufdecken(this)">Aber was nur? Menschen können uns nicht sehen?</div>
+            
+            <div class="rolle nachredner">Person danach: 2. Stern</div>
+            <div class="text-cue">"Sie können uns zwar nicht sehen, aber vielleicht können sie uns ja hören..."</div>
+        </div>
+
+        <div class="auftritt-gruppe">
+            <div class="titel-klein">Zweiter Auftritt</div>
+            <div class="rolle vorredner">Vorredner: Regieanweisung (Stichwort)</div>
+            <div class="text-cue">*Die Sterne stellen sich um ihn herum.*</div>
+            
+            <div class="rolle tabea">Tabeas Text (Zum Aufdecken klicken):</div>
+            <div class="verdeckt-balken" onclick="aufdecken(this)">Du bist doch sonst so ein netter Mann, sei doch nicht so.</div>
+            
+            <div class="rolle nachredner">Person danach: 2. Stern</div>
+            <div class="text-cue">"Kommt schon, hör auf dein Herz."</div>
+        </div>
+
+        <div class="auftritt-gruppe">
+            <div class="titel-klein">Dritter Auftritt</div>
+            <div class="rolle vorredner">Vorredner: Wirt (Stichwort)</div>
+            <div class="text-cue">"Helfen soll Freude machen? Das glaube ich erst, wenn ich es erlebe."</div>
+            
+            <div class="rolle tabea">Tabeas Text (Zum Aufdecken klicken):</div>
+            <div class="verdeckt-balken" onclick="aufdecken(this)">Dann probiere es aus. Schau Maria und Josef an.</div>
+            
+            <div class="rolle nachredner">Person danach: Wirt</div>
+            <div class="text-cue">"Im Haus ist wirklich kein Platz. Aber hinter dem Haus steht ein Stall..."</div>
+        </div>
+    </div>
+
+    <!-- 9. SZENE -->
+    <div class="szene-block">
+        <h2>9. Szene: Die drei Könige folgen dem Stern</h2>
+        
+        <div class="auftritt-gruppe">
+            <div class="titel-klein">Einziger Auftritt</div>
+            <div class="rolle vorredner">Vorredner: Wirt (Stichwort)</div>
+            <div class="text-cue">"... Jetzt beginne ich zu verstehen: Dieses Kind ist wirklich für alle Menschen da."</div>
+            
+            <div class="rolle tabea">Tabeas Text (Zum Aufdecken klicken):</div>
+            <div class="verdeckt-balken" onclick="aufdecken(this)">Wer dem Licht folgt, findet Hoffnung.</div>
+            
+            <div class="rolle nachredner">Person danach: Erzähler/in</div>
+            <div class="text-cue">"So wird in einer dunklen Nacht ein kleines Kind zum Licht der Welt..."</div>
+        </div>
+    </div>
+
+    <!-- 10. SZENE -->
+    <div class="szene-block">
+        <h2>10. Szene: Licht für alle</h2>
+        
+        <div class="auftritt-gruppe">
+            <div class="titel-klein">Einziger Auftritt</div>
+            <div class="rolle vorredner">Vorredner: Engel (Stichwort)</div>
+            <div class="text-cue">"Gottes Licht ist für alle da."</div>
+            
+            <div class="rolle tabea">Tabeas Text (Zum Aufdecken klicken):</div>
+            <div class="verdeckt-balken" onclick="aufdecken(this)">Ein Licht der Hoffnung.</div>
+            
+            <div class="rolle nachredner">Person danach: 2. Stern</div>
+            <div class="text-cue">"Ein Licht der Freude."</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function aufdecken(balken) {
+        balken.classList.add('aufgedeckt');
+    }
+</script>
+
+</body>
+</html>
+
