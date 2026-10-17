@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krippenspiel 2026 - Interaktives Übungsprogramm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 25px;
+        }
+        .setup-box {
+            background: #eef2f7;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 5px solid #3498db;
+            margin-bottom: 30px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 40px;
+            background: #f2f4f8;
+            padding: 10px;
+            border-radius: 4px;
+            border-left: 4px solid #2980b9;
+        }
+        .regie {
+            font-style: italic;
+            color: #7f8c8d;
+            background: #f9f9f9;
+            padding: 10px;
+            border-left: 3px solid #bdc3c7;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dialog-zeile {
+            padding: 12px;
+            margin: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        .text-bereich {
+            flex-grow: 1;
+        }
+        .rolle-name {
+            font-weight: bold;
+            color: #2c3e50;
+            display: inline-block;
+            width: 140px;
+            vertical-align: top;
+        }
+        .text-inhalt {
+            display: inline-block;
+            width: calc(100% - 150px);
+            vertical-align: top;
+        }
+        .versteckt .text-inhalt {
+            background-color: #2c3e50;
+            color: #2c3e50;
+            cursor: pointer;
+            border-radius: 3px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        .versteckt .text-inhalt:hover {
+            background-color: #34495e;
+        }
+        .versteckt .text-inhalt.aufgedeckt {
+            background-color: #e8f8f5;
+            color: #27ae60;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .btn-audio {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        .btn-audio:hover {
+            background: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎭 Krippenspiel 2026</h1>
+    <div class="subtitle">Theaterstück Version 1 — Interaktiver Rollentrainer</div>
+
+    <div class="setup-box">
+        <label for="rolleSelect">Wähle deine Rolle aus (deine Zeilen werden zum Üben verdeckt!):</label>
+        <select id="rolleSelect" onchange="waehleRolle()">
+            <option value="none">-- Ganzen Text anzeigen (Mitlese-Modus) --</option>
+            <option value="1. Stern">1. Stern (Tabea)</option>
+            <option value="2. Stern">2. Stern</option>
+            <option value="3. Stern">3. Stern</option>
+            <option value="Alle Sterne">Alle Sterne</option>
+            <option value="Erzähler/in">Erzähler/in</option>
+            <option value="Maria">Maria</option>
+            <option value="Josef">Josef</option>
+            <option value="Engel Gabriel">Engel Gabriel / Engel / Alle Engel</option>
+            <option value="Wirt">Wirt</option>
+            <option value="Hirten">Hirten (1., 2., 3. Hirte)</option>
+            <option value="Könige">Die drei Könige (Kaspar, Melchior, Balthasar)</option>
+            <option value="Alle Kinder">Alle Kinder</option>
+        </select>
+        <p style="margin-top: 10px; margin-bottom: 0; font-size: 14px; color: #555;">
+            💡 <b>Anleitung:</b> Wähle deine Rolle. Klicke auf die 🔊 Buttons, um die Stichworte deiner Vorredner laut anzuhören. Klicke auf deine geschwärzte Zeile, um die Lösung aufzudecken.
+        </p>
+    </div>
+
+    <h2>1. Szene: Licht in der Dunkelheit</h2>
+    <div class="regie">
+        <span class="audio-text">Die Bühne ist dunkel. Die Sterne kommen nacheinander ohne Licht auf die Bühne.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Erzähler/in">
+        <div class="text-bereich"><span class="rolle-name">Erzähler/in:</span><span class="text-inhalt audio-text">Stellt euch vor, wir reisen ungefähr 2000 Jahre zurück. Kaiser Augustus herrscht über ein großes Reich. In einer kleinen Ecke dieses Reiches beginnt eine besondere Geschichte: Gott kommt als Kind zu den Menschen. Noch ist es dunkel, doch ein neues Licht macht sich auf den Weg.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="1. Stern">
+        <div class="text-bereich"><span class="rolle-name">1. Stern:</span><span class="text-inhalt audio-text">Es ist so dunkel.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="2. Stern">
+        <div class="text-bereich"><span class="rolle-name">2. Stern:</span><span class="text-inhalt audio-text">Und manchmal ist es auch in den Herzen der Menschen dunkel.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="3. Stern">
+        <div class="text-bereich"><span class="rolle-name">3. Stern:</span><span class="text-inhalt audio-text">Dann müssen wir etwas tun. Es darf nicht dunkel bleiben.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="1. Stern">
+        <div class="text-bereich"><span class="rolle-name">1. Stern:</span><span class="text-inhalt audio-text">Lasst uns leuchten und den Menschen Hoffnung bringen!</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Die Sterne entzünden ihre LED-Kerzen und verteilen sich auf der Bühne.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Alle Sterne">
+        <div class="text-bereich"><span class="rolle-name">Alle Sterne:</span><span class="text-inhalt audio-text">Unser Licht leuchtet in der Dunkelheit.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+
+    <h2>2. Szene: Verkündigung und Josefs Rückkehr</h2>
+    <div class="dialog-zeile" data-rolle="Erzähler/in">
+        <div class="text-bereich"><span class="rolle-name">Erzähler/in:</span><span class="text-inhalt audio-text">In Nazareth lebten Maria und Josef. Sie wohnten in einfachen Verhältnissen und Josef arbeitete als Zimmermann. Eines Tages als Maria gerade bei der Hausarbeit war, geschah etwas Besonderes.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Maria macht Hausarbeit und fegt. Sie ist erst alleine. Dann erscheint the Engel.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Engel Gabriel">
+        <div class="text-bereich"><span class="rolle-name">Engel Gabriel:</span><span class="text-inhalt audio-text">Sei gegrüßt Maria, fürchte dich nicht. Ich bin ein Engel des Herrn und Gott hat mich zu dir geschickt.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">(erschrocken/erstaunt): Du bist ein Engel des Herrn? Und Gott hat dich zu mir geschickt?</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Engel Gabriel">
+        <div class="text-bereich"><span class="rolle-name">Engel Gabriel:</span><span class="text-inhalt audio-text">Ja, so ist es.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">Und du bist dir sicher, dass du zu mir willst?</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Engel Gabriel">
+        <div class="text-bereich"><span class="rolle-name">Engel Gabriel:</span><span class="text-inhalt audio-text">Absolut. Und Maria, ich soll dir eine wundervolle Nachricht von Gott überbringen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">Und welche?</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Engel Gabriel">
+        <div class="text-bereich"><span class="rolle-name">Engel Gabriel:</span><span class="text-inhalt audio-text">Du wirst einen Sohn bekommen, Gottes Sohn. Du sollst ihm den Namen Jesus geben.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">Ich verstehe noch nicht ganz, wie das geschehen soll. Aber nun gut, dann soll es so sein. Trotzdem habe ich Angst. Was ist, wenn Josef mir nicht glaubt?</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Engel Gabriel">
+        <div class="text-bereich"><span class="rolle-name">Engel Gabriel:</span><span class="text-inhalt audio-text">(aufmunternd): Mach dir keine Sorge. Vertrau auf Gott.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Engel Gabriel geht ab. Maria fegt weiter. Josef kommt eilig herein.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Josef">
+        <div class="text-bereich"><span class="rolle-name">Josef:</span><span class="text-inhalt audio-text">Maria, Maria, mir ist etwas ganz Erstaunliches geschehen. Ein Engel ist mir erschienen. Er hat gesagt, dass du den Sohn Gottes bekommen wirst und dass ich mich sehr gut um dich kümmern soll.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">Josef, auch mir ist ein Engel erschienen. Er hat mir dasselbe gesagt.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Josef">
+        <div class="text-bereich"><span class="rolle-name">Josef:</span><span class="text-inhalt audio-text">Dann werden wir wohl bald Eltern.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">So sieht es aus. (lächelt)</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Beide erstarren. Die Sterne treten auf.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="1. Stern">
+        <div class="text-bereich"><span class="rolle-name">1. Stern:</span><span class="text-inhalt audio-text">Habt ihr das gehört? (freudig) Maria hat Ja gesagt.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="2. Stern">
+        <div class="text-bereich"><span class="rolle-name">2. Stern:</span><span class="text-inhalt audio-text">Wie wunderbar. Gottes Licht kommt in die Welt.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="3. Stern">
+        <div class="text-bereich"><span class="rolle-name">3. Stern:</span><span class="text-inhalt audio-text">Endlich, eine neue Zeit wird anbrechen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="1. Stern">
+        <div class="text-bereich"><span class="rolle-name">1. Stern:</span><span class="text-inhalt audio-text">Kommt lasst uns sehen, was weiter geschieht.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+
+    <h2>3. Szene: Die Sterne begleiten den Weg</h2>
+    <div class="regie">
+        <span class="audio-text">Maria und Josef gehen langsam über die Bühne. Die Sterne folgen ihnen.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Erzähler/in">
+        <div class="text-bereich"><span class="rolle-name">Erzähler/in:</span><span class="text-inhalt audio-text">Einige Monate später befahl Kaiser Augustus, dass sich alle Menschen in ihrer Heimatstadt zählen lassen sollten. Deshalb machen sich hochschwangere Maria und Josef auf den langen Weg nach Bethlehem. Den dies war Josefs Geburtsort.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Josef">
+        <div class="text-bereich"><span class="rolle-name">Josef:</span><span class="text-inhalt audio-text">Der Weg ist weit. Geht es dir gut, Maria?</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">Ich bin müde und mir ist etwas kalt, wir sollten bald eine Pause einlegen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Josef">
+        <div class="text-bereich"><span class="rolle-name">Josef:</span><span class="text-inhalt audio-text">Es ist nicht mehr weit, sieh nur ich kann da hinten schon die ersten Häuser sehen. Dort liegt Bethlehem. Bald finden wir einen Platz zum Ausruhen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Maria und Josef erstarren.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="1. Stern">
+        <div class="text-bereich"><span class="rolle-name">1. Stern:</span><span class="text-inhalt audio-text">Wir sollten ihnen helfen. Lasst uns etwas mehr leuchten. So können wir sie vielleicht wärmen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="2. Stern">
+        <div class="text-bereich"><span class="rolle-name">2. Stern:</span><span class="text-inhalt audio-text">Das ist eine gute Idee.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="3. Stern">
+        <div class="text-bereich"><span class="rolle-name">3. Stern:</span><span class="text-inhalt audio-text">Wo Gottes Licht gebraucht wird, wollen wir leuchten.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">Mir ist schon viel wärmer.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Josef">
+        <div class="text-bereich"><span class="rolle-name">Josef:</span><span class="text-inhalt audio-text">Das ist gut, sieh nur, gleich sind wir da.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+
+    <h2>4. Szene: Bethlehem und der ungläubige Wirt</h2>
+    <div class="dialog-zeile" data-rolle="Erzähler/in">
+        <div class="text-bereich"><span class="rolle-name">Erzähler/in:</span><span class="text-inhalt audio-text">Bethlehem ist voller Menschen. Maria und Josef suchen lange nach einer Unterkunft. Schließlich klopfen sie an die Tür eines Wirtes.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Maria und Josef klopfen. Die Sterne bleiben im Hintergrund. Der Wirt tritt abweisend auf.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Josef">
+        <div class="text-bereich"><span class="rolle-name">Josef:</span><span class="text-inhalt audio-text">Guten Abend. Haben Sie noch einen Platz für uns? Meine Frau braucht dringend Ruhe.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Wirt">
+        <div class="text-bereich"><span class="rolle-name">Wirt:</span><span class="text-inhalt audio-text">Was wollt ihr denn noch so spät hier? Alle Betten sind belegt, bis unters Dach – also zieht weiter!</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">Bitte, wir brauchen kein Zimmer. Ein geschützter Platz genügt.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Wirt">
+        <div class="text-bereich"><span class="rolle-name">Wirt:</span><span class="text-inhalt audio-text">Als ob eure Sorgen mein Problem wären! Von Mitleid kann ich mir nichts kaufen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Josef">
+        <div class="text-bereich"><span class="rolle-name">Josef:</span><span class="text-inhalt audio-text">Wir bitten nur um ein wenig Menschlichkeit.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Wirt">
+        <div class="text-bereich"><span class="rolle-name">Wirt:</span><span class="text-inhalt audio-text">Verschont mich mit euren schönen Worten! Mein Haus bleibt heute und morgen für euch geschlossen – auf Wiedersehen!</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Der Wirt dreht sich weg. Maria und Josef setzen sich erschöpft an den Rand.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Erzähler/in">
+        <div class="text-bereich"><span class="rolle-name">Erzähler/in:</span><span class="text-inhalt audio-text">Die Tür fällt zu. Draußen ist es kalt, und auch im Herzen des Wirtes ist es dunkel.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+
+    <h2>5. Szene: Die Sterne sprechen mit dem Wirt</h2>
+    <div class="regie">
+        <span class="audio-text">Die Sterne besprechen sich.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="2. Stern">
+        <div class="text-bereich"><span class="rolle-name">2. Stern:</span><span class="text-inhalt audio-text">So kann es nicht bleiben.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="3. Stern">
+        <div class="text-bereich"><span class="rolle-name">3. Stern:</span><span class="text-inhalt audio-text">Wir müssen etwas unternehmen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="1. Stern">
+        <div class="text-bereich"><span class="rolle-name">1. Stern:</span><span class="text-inhalt audio-text">Aber was nur? Menschen können uns nicht sehen?</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="2. Stern">
+        <div class="text-bereich"><span class="rolle-name">2. Stern:</span><span class="text-inhalt audio-text">Sie können uns zwar nicht sehen, aber vielleicht können sie uns ja hören, wenn wir uns anstrengen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="3. Stern">
+        <div class="text-bereich"><span class="rolle-name">3. Stern:</span><span class="text-inhalt audio-text">Na gut, lasst es uns versuchen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Wirt">
+        <div class="text-bereich"><span class="rolle-name">Wirt:</span><span class="text-inhalt audio-text">Heute Nacht ist wirklich was los, dauernd klopft jemand an meine Tür. Ich muss mich doch nicht um jeden kümmern. Es ist doch nicht meine Schuld, dass es keine Betten mehr gibt.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Die Sterne stellen sich um ihn herum.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="1. Stern">
+        <div class="text-bereich"><span class="rolle-name">1. Stern:</span><span class="text-inhalt audio-text">Du bist doch sonst so ein netter Mann, sei doch nicht so.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="2. Stern">
+        <div class="text-bereich"><span class="rolle-name">2. Stern:</span><span class="text-inhalt audio-text">Kommt schon, hör auf dein Herz.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="3. Stern">
+        <div class="text-bereich"><span class="rolle-name">3. Stern:</span><span class="text-inhalt audio-text">Und wer anderen hilft, macht anderen eine Freude.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Wirt">
+        <div class="text-bereich"><span class="rolle-name">Wirt:</span><span class="text-inhalt audio-text">Helfen soll Freude machen? Das glaube ich erst, wenn ich es erlebe.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="1. Stern">
+        <div class="text-bereich"><span class="rolle-name">1. Stern:</span><span class="text-inhalt audio-text">Dann probiere es aus. Schau Maria und Josef an.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Wirt">
+        <div class="text-bereich"><span class="rolle-name">Wirt:</span><span class="text-inhalt audio-text">Im Haus ist wirklich kein Platz. Aber hinter dem Haus steht ein Stall. Dort könnten sie vielleicht schlafen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Maria und Josef wollen gerade aufbrechen. Der Wirt rennt ihnen nach.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Wirt">
+        <div class="text-bereich"><span class="rolle-name">Wirt:</span><span class="text-inhalt audio-text">Hey ihr da, wartet, ich... hinter meinem Haus steht ein Stall, dort könnt ihr gerne die Nacht verbringen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">Danke vielmals. Das ist mehr, als wir zu hoffen wagten.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Josef">
+        <div class="text-bereich"><span class="rolle-name">Josef:</span><span class="text-inhalt audio-text">Gott segne Sie.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Wirt">
+        <div class="text-bereich"><span class="rolle-name">Wirt:</span><span class="text-inhalt audio-text">Geht einfach in den Stall... Ein Dank ist nicht nötig.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+
+    <h2>6. Szene: Das Kind wird geboren</h2>
+    <div class="regie">
+        <span class="audio-text">Maria und Josef gehen zur Krippe. Die Sterne bilden einen Halbkreis.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Erzähler/in">
+        <div class="text-bereich"><span class="rolle-name">Erzähler/in:</span><span class="text-inhalt audio-text">Während Maria und Josef im Stall sind, kommt die Zeit der Geburt. Maria bringt ihren Sohn zur Welt, wickelt ihn in Tücher und legt ihn in eine Krippe, weil sonst kein Platz für sie ist.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">Willkommen, Jesus. Du bist klein und doch bringst du Gottes Licht in die Welt.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Josef">
+        <div class="text-bereich"><span class="rolle-name">Josef:</span><span class="text-inhalt audio-text">Wir wollen dich beschützen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Alle Sterne">
+        <div class="text-bereich"><span class="rolle-name">Alle Sterne:</span><span class="text-inhalt audio-text">Das Licht scheint in der Dunkelheit.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+
+    <h2>7. Szene: Engel und Hirten</h2>
+    <div class="regie">
+        <span class="audio-text">Die drei Hirten sitzen an einem angedeuteten Feuer. Einer reibt sich die Hände, einer sucht seine Decke, der dritte nickt immer wieder ein. Am Rand stehen die Engel noch im Dunkeln bereit.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Erzähler/in">
+        <div class="text-bereich"><span class="rolle-name">Erzähler/in:</span><span class="text-inhalt audio-text">In derselben Nacht wachen Hirten auf einem Feld bei ihren Schafen. Es ist kalt, die Nacht ist lang, und die Hirten kämpfen gegen die Müdigkeit.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">1. Hirte:</span><span class="text-inhalt audio-text">Hat jemand meine Decke gesehen? Wenn das so weitergeht, bin ich morgen selbst ein Eiszapfen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">2. Hirte:</span><span class="text-inhalt audio-text">Du sitzt darauf.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">1. Hirte:</span><span class="text-inhalt audio-text">Ach so. Ich wollte nur prüfen, ob ihr aufpasst.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">3. Hirte:</span><span class="text-inhalt audio-text">Ich passe auf. Ganz bestimmt. Ich mache nur kurz die Augen zu, damit ich im Dunkeln besser hören kann.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">2. Hirte:</span><span class="text-inhalt audio-text">So nennst du das also? Dein Schnarchen hat gerade drei Schafe erschreckt!</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">3. Hirte:</span><span class="text-inhalt audio-text">Unsinn. Das war bestimmt ein Schaf, das im Schlaf geblökt hat.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">1. Hirte:</span><span class="text-inhalt audio-text">Wenn ein Schaf so schnarcht wie du, finden wir es sogar im Dunkeln wieder.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Plötzlich wird es sehr hell. Die Hirten springen auf, stolpern beinahe übereinander und halten schützend die Hände vor die Augen.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Erzähler/in">
+        <div class="text-bereich"><span class="rolle-name">Erzähler/in:</span><span class="text-inhalt audio-text">Da ist ein helles Licht in der Dunkelheit. Die Hirten sind mit einem Schlag hellwach.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">1. Hirte:</span><span class="text-inhalt audio-text">Was ist das? Brennt der Himmel?</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">2. Hirte:</span><span class="text-inhalt audio-text">Ich habe nichts gemacht! Wirklich nicht!</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Der Verkündigungsengel tritt ins Licht. Weitere Engel stellen sich dahinter.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Engel Gabriel">
+        <div class="text-bereich"><span class="rolle-name">Engel:</span><span class="text-inhalt audio-text">Fürchtet euch nicht! Ich verkünde euch große Freude, die allen Menschen gilt: Heute ist in Bethlehem der Retter geboren. Brecht auf nach Bethlehem, dort werdet ihr ein Kind finden, in Tücher gewickelt und in einer Krippe liegend.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">2. Hirte:</span><span class="text-inhalt audio-text">In einer Krippe? Also wirklich bei Heu und Stroh?</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Engel Gabriel">
+        <div class="text-bereich"><span class="rolle-name">Engel:</span><span class="text-inhalt audio-text">Ja. Gerade dort werdet ihr ihn finden.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">3. Hirte:</span><span class="text-inhalt audio-text">Dann war es kein Traum. So etwas könnte nicht einmal ich mir ausdenken.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Engel Gabriel">
+        <div class="text-bereich"><span class="rolle-name">Alle Engel:</span><span class="text-inhalt audio-text">Ehre sei Gott in der Höhe und Friede auf Erden bei den Menschen!</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Die Engel heben die Arme. Nach einem kurzen Moment treten die Engel zurück.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Erzähler/in">
+        <div class="text-bereich"><span class="rolle-name">Erzähler/in:</span><span class="text-inhalt audio-text">Ebenso plötzlich, wie das Licht gekommen ist, wird es wieder still. Doch für die Hirten ist nichts mehr wie zuvor.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">1. Hirte:</span><span class="text-inhalt audio-text">Habt ihr das auch gehört? Der Retter ist geboren!</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">2. Hirte:</span><span class="text-inhalt audio-text">Gehört? Mir klingt es noch in den Ohren. Und meine Knie zittern immer noch.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">3. Hirte:</span><span class="text-inhalt audio-text">Dann setzen wir uns erst einmal hin und denken gründlich darüber nach.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">1. Hirte:</span><span class="text-inhalt audio-text">Hinsetzen? Der Engel hat gesagt, wir sollen das Kind finden!</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">2. Hirte:</span><span class="text-inhalt audio-text">Genau. Zum ersten Mal in deinem Leben musst du schneller aufstehen, als du eingeschlafen bist.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Die Hirten greifen hastig nach Stäben und Bündeln. Der 3. Hirte nimmt versehentlich die Decke des 1. Hirten.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">1. Hirte:</span><span class="text-inhalt audio-text">Halt, das ist meine Decke!</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">3. Hirte:</span><span class="text-inhalt audio-text">Dann nimm du meinen Stock. Hauptsache, wir kommen los.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">2. Hirte:</span><span class="text-inhalt audio-text">Seht dort den hellen Stern über Bethlehem. Er zeigt uns den Weg.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">1. Hirte:</span><span class="text-inhalt audio-text">Dann gehen wir. Wenn Engel mitten in der Nacht singen, sollte man sie nicht warten lassen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">3. Hirte:</span><span class="text-inhalt audio-text">Und die Schafe?</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">2. Hirte:</span><span class="text-inhalt audio-text">Die schaffen eine Nacht auch ohne dein Schnarchen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">Alle Hirten:</span><span class="text-inhalt audio-text">Auf nach Bethlehem!</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Ein Stern erscheint und die Hirten folgen ihm zur Krippe.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+
+    <h2>8. Szene: An der Krippe</h2>
+    <div class="dialog-zeile" data-rolle="Erzähler/in">
+        <div class="text-bereich"><span class="rolle-name">Erzähler/in:</span><span class="text-inhalt audio-text">Die Hirten folgen dem Licht und finden Maria, Josef und das Kind.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">1. Hirte:</span><span class="text-inhalt audio-text">Es stimmt! Da über dem Stall steht der Stern still.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">2. Hirte:</span><span class="text-inhalt audio-text">Kommt, lasst uns hineingehen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Die Hirten nähern sich der Krippe, Maria und Josef blicken auf.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Josef">
+        <div class="text-bereich"><span class="rolle-name">Josef:</span><span class="text-inhalt audio-text">Willkommen, können wir euch helfen?</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">1. Hirte:</span><span class="text-inhalt audio-text">Engel sind uns erschienen und ein Stern hat uns den Weg zu euch gewiesen. Wir sind hier um Gottes Sohn zu sehen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">Dann kommt gerne näher. Hier liegt er.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Die Hirten nähern sich vorsichtig.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Hirten">
+        <div class="text-bereich"><span class="rolle-name">3. Hirte:</span><span class="text-inhalt audio-text">Wir haben kaum etwas zu schenken. Aber wir bringen unsere Freude und unser Staunen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">Kommt nur näher. Dieses Kind ist für alle Menschen da.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Der Wirt kommt mit Brot und einer Decke. Alle setzen sich zusammen in die Krippe. Der Wirt geht langsam zum Haus zurück.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+
+    <h2>9. Szene: Die drei Könige folgen dem Stern</h2>
+    <div class="regie">
+        <span class="audio-text">Kaspar, Melchior und Balthasar kommen mit ihren Geschenken. Ein Stern geht ihnen voraus. Der Wirt steht vor dem Stall.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Erzähler/in">
+        <div class="text-bereich"><span class="rolle-name">Erzähler/in:</span><span class="text-inhalt audio-text">Auch drei Könige haben den besonderen Stern gesehen. Sie sind von weit hergereist, weil sie wissen: Dieses Licht führt sie zu einem neuen König.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Könige">
+        <div class="text-bereich"><span class="rolle-name">Melchior:</span><span class="text-inhalt audio-text">Dort ist die Himmelserscheinung! Ein unglaubliches Licht!</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Könige">
+        <div class="text-bereich"><span class="rolle-name">Balthasar:</span><span class="text-inhalt audio-text">Der Himmelskörper bewegt sich, das muss ein Zeichen sein. Der Stern will uns zeigen. Ein neuer König ist geboren.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Könige">
+        <div class="text-bereich"><span class="rolle-name">Kaspar:</span><span class="text-inhalt audio-text">Guten Abend. Der Stern weist uns genau zu diesem Stall. Ist hier ein Kind geboren worden? Das Leuchten deutet den Weg zum Heiland.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Wirt">
+        <div class="text-bereich"><span class="rolle-name">Wirt:</span><span class="text-inhalt audio-text">Tatsächlich liegt dort ein Kind in der Krippe. Aber ein König in meinem Stall? Das soll ich glauben? Ihr wollt mir erzählen, dass dieser Winzling in der Krippe in meinem Stall der Heiland ist - obwohl ich es mit eigenen Augen gesehen habe fällt es mir schwer zu glauben.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Könige">
+        <div class="text-bereich"><span class="rolle-name">Melchior:</span><span class="text-inhalt audio-text">Nicht jeder König lebt in einem Palast.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Könige">
+        <div class="text-bereich"><span class="rolle-name">Balthasar:</span><span class="text-inhalt audio-text">Manchmal zeigt sich Gottes Größe ganz klein und still. Liegt da wirklich ein Kind?</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Könige">
+        <div class="text-bereich"><span class="rolle-name">Kaspar:</span><span class="text-inhalt audio-text">Kommt, wir sind am Ziel. Danke für die Auskunft! Lasst uns nach dem Kind schauen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="regie">
+        <span class="audio-text">Die Könige treten an die Krippe und verbeugen sich.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">Danke, dass ihr den weiten Weg zu uns gekommen seid.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Josef">
+        <div class="text-bereich"><span class="rolle-name">Josef:</span><span class="text-inhalt audio-text">Kommt herein und schaut selbst.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Könige">
+        <div class="text-bereich"><span class="rolle-name">Kaspar:</span><span class="text-inhalt audio-text">Ich schenke dir Gold. Es ist ein Geschenk für einen König.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Könige">
+        <div class="text-bereich"><span class="rolle-name">Melchior:</span><span class="text-inhalt audio-text">Ich schenke dir Weihrauch. Er erinnert uns daran, dass Gott bei uns ist.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Könige">
+        <div class="text-bereich"><span class="rolle-name">Balthasar:</span><span class="text-inhalt audio-text">Ich schenke dir Myrrhe. Sie ist kostbar und zeigt unsere Liebe.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Wirt">
+        <div class="text-bereich"><span class="rolle-name">Wirt:</span><span class="text-inhalt audio-text">Erst die Hirten, nun drei Könige – und alle folgen demselben Licht. Jetzt beginne ich zu verstehen: Dieses Kind ist wirklich für alle Menschen da.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="1. Stern">
+        <div class="text-bereich"><span class="rolle-name">1. Stern:</span><span class="text-inhalt audio-text">Wer dem Licht folgt, findet Hoffnung.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+
+    <h2>10. Szene: Licht für alle</h2>
+    <div class="regie">
+        <span class="audio-text">Alle stehen um die Krippe. Die Sterne heben ihre Lichter.</span>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Erzähler/in">
+        <div class="text-bereich"><span class="rolle-name">Erzähler/in:</span><span class="text-inhalt audio-text">So wird in einer dunklen Nacht ein kleines Kind zum Licht der Welt. Maria vertraut, Josef bleibt an ihrer Seite, die Hirten und die drei Könige folgen dem Licht, und sogar der ungläubige Wirt öffnet sein Herz.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Engel Gabriel">
+        <div class="text-bereich"><span class="rolle-name">Engel:</span><span class="text-inhalt audio-text">Gottes Licht ist für alle da.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="1. Stern">
+        <div class="text-bereich"><span class="rolle-name">1. Stern:</span><span class="text-inhalt audio-text">Ein Licht der Hoffnung.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="2. Stern">
+        <div class="text-bereich"><span class="rolle-name">2. Stern:</span><span class="text-inhalt audio-text">Ein Licht der Freude.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="3. Stern">
+        <div class="text-bereich"><span class="rolle-name">3. Stern:</span><span class="text-inhalt audio-text">Ein Licht der Liebe.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Maria">
+        <div class="text-bereich"><span class="rolle-name">Maria:</span><span class="text-inhalt audio-text">Tragt dieses Licht weiter.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Josef">
+        <div class="text-bereich"><span class="rolle-name">Josef:</span><span class="text-inhalt audio-text">Damit niemand im Dunkeln bleiben muss.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Wirt">
+        <div class="text-bereich"><span class="rolle-name">Wirt:</span><span class="text-inhalt audio-text">Und damit wir unsere Türen füreinander öffnen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+    <div class="dialog-zeile" data-rolle="Alle Kinder">
+        <div class="text-bereich"><span class="rolle-name">Alle Kinder:</span><span class="text-inhalt audio-text">Das Licht leuchtet in der Welt. Gott schenkt es uns allen.</span></div>
+        <button class="btn-audio" onclick="speak(this)">🔊 Vorlesen</button>
+    </div>
+
+    <div class="subtitle" style="margin-top: 30px;">Abschlusslied: Eine Strophe nach Wahl.</div>
+</div>
+
+<script>
+    function waehleRolle() {
+        var gewaehlteRolle = document.getElementById("rolleSelect").value;
+        var zeilen = document.querySelectorAll(".dialog-zeile");
+        
+        zeilen.forEach(function(zeile) {
+            var rollenTyp = zeile.getAttribute("data-rolle");
+            var textInhalt = zeile.querySelector(".text-inhalt");
+            
+            zeile.classList.remove("versteckt");
+            textInhalt.classList.remove("aufgedeckt");
+            
+            if (gewaehlteRolle !== "none") {
+                if (rollenTyp === gewaehlteRolle || 
+                    (gewaehlteRolle === "Hirten" && rollenTyp === "Hirten") ||
+                    (gewaehlteRolle === "Könige" && rollenTyp === "Könige") ||
+                    (gewaehlteRolle === "Alle Sterne" && (rollenTyp === "1. Stern" || rollenTyp === "2. Stern" || rollenTyp === "3. Stern" || rollenTyp === "Alle Sterne"))) {
+                    
+                    zeile.classList.add("versteckt");
+                    
+                    if (!textInhalt.onclick) {
+                        textInhalt.onclick = function() {
+                            if (zeile.classList.contains("versteckt")) {
+                                this.classList.toggle("aufgedeckt");
+                            }
+                        };
+                    }
+                }
+            }
+        });
+    }
+
+    function speak(button) {
+        var parent = button.closest('.dialog-zeile') || button.closest('.regie');
+        var textNode = parent.querySelector('.audio-text');
+        var text = textNode.textContent;
+        
+        if (parent.querySelector('.rolle-name')) {
+            var rolleLaenge = parent.querySelector('.rolle-name').textContent.length;
+            text = text.substring(rolleLaenge).trim();
+        }
+
+        window.speechSynthesis.cancel();
+
+        var utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'de-DE';
+        window.speechSynthesis.speak(utterance);
+    }
+
+</script>
+
+</body>
+</html>
